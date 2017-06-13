@@ -1,0 +1,99 @@
+<!-- BOOK WIDGET -->
+
+<div class="search distance" ng-controller="bookCtrl as bk">
+  <div ng-show="main.isHome" ng-class="(head.isMobile) ? 'mobile_book' : 'desktop_book'" style="position: absolute; color: white; left: 50%; z-index: 1; margin-left: -1000px; width: 2000px; text-align: center;"
+    class="show_desktop">
+    <p class="font__title1--white">El primer buscador para el viajero colaborativo</p>
+    <p style="margin-top: 8px" class="font__title2--white">Encuentra apartamentos turísticos, transporte compartido y planes únicos</p>
+  </div>
+  <md-toolbar md-whiteframe="8" style="padding-bottom: 20px;">
+    <div class="show_mobile" ng-hide="!main.isHome">
+      <p class="font__title1--white">El primer buscador para el viajero colaborativo</p>
+      <p style="margin-top: 8px" class="font__title2--white">Encuentra apartamentos turísticos, transporte compartido y planes únicos</p>
+    </div>
+    <md-tabs md-dynamic-height md-center-tabs md-selected="bk.idTabSelected">
+      <md-tab class="book__tab">
+        <md-tab-label>
+          <img class="logo-image alojamiento" src="assets/images/ic-filtro-white-casa.svg">
+          <md-button class="tab-button font__body1--white">Alojamiento</md-button>
+        </md-tab-label>
+        <md-tab-body class="tabs">
+          <div flex layout="row" layout-align="center" style="margin-top: 50px">
+            <form>
+              <section class="transparent__section" layout="column" layout-gt-xs="row" layout-wrap class="fields-wrap">
+                <input type="text" class="googleautocomplete" placeholder="Destino" ng-model="bk.request.autocomplete.destino" ng-autocomplete
+                  options="bk.options" details="bk.request.destino" />
+
+                <md-datepicker aria-label="Fecha de llegada" md-placeholder="Llegada" class="datepickerfield date" ng-model="bk.request.dateIn"
+                  ng-change="bk.setMinDateOut()" md-min-date="bk.minDate" md-placeholder="Enter date" md-open-on-focus></md-datepicker>
+
+                <md-datepicker aria-label="Fecha de salida" md-placeholder="Salida" class="datepickerfield date" ng-model="bk.request.dateOut"
+                  md-min-date="bk.request.dateIn" md-placeholder="Fecha final" md-open-on-focus></md-datepicker>
+
+                <md-input-container class="people-input no-border">
+                  <label>Personas</label>
+                  <md-select ng-model="bk.request.persons">
+                    <md-option ng-repeat="personas in bk.personas" value="{{personas.id}}" ng-selected="$index == 1">
+                      {{personas.name}}
+                    </md-option>
+                  </md-select>
+                </md-input-container>
+                <md-button aria-label="Buscar alojamiento" class="search-button" ng-click="bk.getAlojamientoRes()" ng-disabled="!bk.request.autocomplete.destino">
+                  BUSCAR
+                </md-button>
+
+              </section>
+            </form>
+          </div>
+        </md-tab-body>
+      </md-tab>
+      <md-tab class="book__tab">
+        <md-tab-label>
+          <img class="logo-image transporte" src="assets/images/ic-car.svg">
+          <md-button class="tab-button font__body1--white">Transporte</md-button>
+        </md-tab-label>
+        <md-tab-body class="tabs">
+
+          <div flex layout="row" layout-align="center" style="margin-top: 50px">
+            <!-- TRANSPORT FORM -->
+            <form>
+              <section class="transparent__section" layout="column" layout-gt-xs="row" layout-wrap>
+                <input type="text" class="googleautocomplete transport" placeholder="Origen" ng-model="bk.request.autocomplete.origen" ng-autocomplete
+                  options="bk.options" details="bk.request.origen" />
+                <input type="text" class="googleautocomplete transport" placeholder="Destino" ng-model="bk.request.autocomplete.destino"
+                  ng-autocomplete options="bk.options" details="bk.request.destino" />
+                <md-datepicker class="datepickerfield date no-border" aria-label="Fecha de salida" ng-model="bk.request.dateIn" required
+                  md-placeholder="Fecha" md-open-on-focus md-min-date="bk.minDate"></md-datepicker>
+                <input type="hidden" name="fecha" value="{{formatDate(bk.request.dateIn)}}">
+                <md-button aria-label="Buscar transporte" class="search-button" ng-click="bk.getTransportRes()" ng-disabled="!bk.request.autocomplete.destino || !bk.request.autocomplete.origen">
+                  BUSCAR
+                </md-button>
+              </section>
+            </form>
+            <!-- TRANSPORT FORM -->
+          </div>
+
+        </md-tab-body>
+      </md-tab>
+      <md-tab class="book__tab">
+        <md-tab-label>
+          <img class="logo-image actividades" src="assets/images/ic-baloon.svg">
+          <md-button class="tab-button font__body1--white">Actividades</md-button>
+        </md-tab-label>
+        <md-tab-body class="tabs">
+          <div flex layout="row" layout-align="center" style="margin-top: 50px">
+            <form>
+              <section class="transparent__section" layout="column" layout-gt-xs="row" layout-wrap class="fields-wrap">
+                <input type="text" class="googleautocomplete actividades" ng-model="bk.request.autocomplete.destino" placeholder="Destino"
+                  ng-autocomplete options="bk.options" details="bk.request.destino" />
+                <md-button aria-label="Buscar actividades" class="search-button" ng-click="bk.getActividadesRes()" ng-disabled="!bk.request.autocomplete.destino">
+                  BUSCAR
+                </md-button>
+              </section>
+            </form>
+          </div>
+        </md-tab-body>
+      </md-tab>
+    </md-tabs>
+  </md-toolbar>
+</div>
